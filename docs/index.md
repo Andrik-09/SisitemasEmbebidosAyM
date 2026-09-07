@@ -1,17 +1,13 @@
 <div class="port-page" markdown>
 
 <div class="hero" id="inicio">
-  <div class="hero__pattern"></div>
+  <div class="hero__photo" role="img" aria-label="Fotografía macro de un microcontrolador sobre una placa de circuito, representando los sistemas embebidos"></div>
+  <div class="hero__scrim"></div>
   <div class="hero__content">
-    <div class="hero__top">
+    <div class="hero__brand">
       <a class="hero__institution" href="https://www.iberopuebla.mx/" target="_blank" rel="noopener" title="Ir al sitio de la Universidad Iberoamericana Puebla">
         <img src="recursos/imgs/ibero.jpeg" alt="Universidad Iberoamericana Puebla">
       </a>
-      <nav class="hero__nav" aria-label="Navegación del portafolio">
-        <a href="#inicio">Inicio</a>
-        <a href="#equipo">Equipo</a>
-        <a href="#practicas">Prácticas</a>
-      </nav>
     </div>
     <p class="hero__eyebrow">Departamento de Ciencias e Ingenierías · Universidad Iberoamericana Puebla, México</p>
     <h1 class="hero__title">Portafolio de Actividades</h1>
@@ -19,6 +15,10 @@
     <p class="hero__desc">
       Bitácora de las prácticas y proyectos desarrollados durante el semestre: proceso,
       herramientas utilizadas y aprendizajes obtenidos en cada actividad.
+    </p>
+    <p class="hero__credit">
+      Foto: microcontrolador RP2350 en una Raspberry Pi Pico 2 ·
+      <a href="https://commons.wikimedia.org/wiki/File:Macro_photograph_of_the_RP2350_microcontroller_on_a_Raspberry_Pi_Pico_2_board.jpg" target="_blank" rel="noopener">Fritzchens Fritz, Wikimedia Commons (CC0)</a>
     </p>
   </div>
 </div>
@@ -47,7 +47,7 @@
       </a>
     </article>
 
-    <article class="profile-card" style="--accent:#1d7a8c">
+    <article class="profile-card" style="--accent:#3a3a3a">
       <div class="profile-card__avatar" aria-hidden="true">MSA</div>
       <h3>Mauro David Sánchez Arenas</h3>
       <p class="profile-card__role">Ingeniería Mecatrónica</p>
