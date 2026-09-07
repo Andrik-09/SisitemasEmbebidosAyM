@@ -1,0 +1,441 @@
+/* =========================================================
+   Portafolio de Actividades — estilos propios
+   Sistemas Embebidos y Mecatrónica · Universidad Iberoamericana Puebla
+   ========================================================= */
+
+:root {
+  --port-red: #d62839;
+  --port-red-dark: #8c1c2b;
+  --port-ink: #1c1d21;
+  --port-muted: #5b5f6b;
+  --port-bg-soft: #f6f6f8;
+  --port-card-bg: #ffffff;
+  --port-border: #e7e7ea;
+  --port-accent-2: #1d7a8c;
+  --port-radius: 18px;
+  --port-shadow: 0 10px 30px -12px rgba(28, 29, 33, 0.25);
+  --port-shadow-soft: 0 4px 14px -6px rgba(28, 29, 33, 0.15);
+}
+
+/* Deja que las secciones propias ocupen todo el ancho, sin el
+   padding/typografía por defecto de Material para el contenido markdown. */
+.md-content .md-typeset .port-page {
+  margin: -1.2rem -1.2rem 0;
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-content .md-typeset .port-page {
+    margin: -1.2rem -1.6rem 0;
+  }
+}
+
+.port-page * {
+  box-sizing: border-box;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 2.2rem 1.5rem 4.5rem;
+  background: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08), transparent 45%),
+    linear-gradient(135deg, var(--port-red-dark) 0%, var(--port-red) 55%, #ff5d5d 100%);
+  color: #fff;
+}
+
+/* patrón sutil tipo "circuito" para dar identidad de sistemas embebidos */
+.hero__pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  pointer-events: none;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.9) 1.5px, transparent 1.5px);
+  background-size: 42px 42px, 42px 42px, 42px 42px;
+  background-position: 0 0, 0 0, 21px 21px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.1));
+}
+
+.hero__content {
+  position: relative;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.4rem;
+}
+
+.hero__institution {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  line-height: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease;
+}
+
+.hero__institution:hover,
+.hero__institution:focus-visible {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.hero__institution img {
+  height: 52px;
+  width: auto;
+  display: block;
+}
+
+.hero__nav {
+  display: flex;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.35rem;
+  border-radius: 999px;
+}
+
+.hero__nav a {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.hero__nav a:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hero__nav a.is-active {
+  background: #fff;
+  color: var(--port-red-dark) !important;
+}
+
+.hero__eyebrow {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 0.6rem;
+}
+
+.hero__title {
+  font-size: clamp(2.1rem, 4.5vw, 3.1rem);
+  line-height: 1.08;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #fff !important;
+}
+
+.hero__subtitle {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 600;
+  margin: 0 0 0.9rem;
+  color: #ffe3e3;
+}
+
+.hero__desc {
+  max-width: 38rem;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---------- SECCIONES ---------- */
+.section {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.section--tinted {
+  background: var(--port-bg-soft);
+}
+
+.section__header {
+  max-width: 42rem;
+  margin: 0 auto 2.6rem;
+  text-align: center;
+}
+
+.section__kicker {
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--port-red);
+  margin-bottom: 0.5rem;
+}
+
+.section__header h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.9rem;
+  color: var(--port-ink) !important;
+}
+
+.section__header p {
+  color: var(--port-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ---------- PERFILES ---------- */
+.profiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.6rem;
+  margin-top: 1.4rem;
+}
+
+.profile-card {
+  --accent: var(--port-red);
+  position: relative;
+  background: var(--port-card-bg);
+  border: 1px solid var(--port-border);
+  border-radius: var(--port-radius);
+  padding: 2rem 1.6rem 1.7rem;
+  text-align: center;
+  box-shadow: var(--port-shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 6px;
+  border-radius: var(--port-radius) var(--port-radius) 0 0;
+  background: var(--accent);
+}
+
+.profile-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--port-shadow);
+}
+
+.profile-card__avatar {
+  width: 84px;
+  height: 84px;
+  margin: 0.4rem auto 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(145deg, var(--accent), var(--port-ink));
+  box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.4);
+}
+
+.profile-card h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.15rem;
+  color: var(--port-ink) !important;
+}
+
+.profile-card__role {
+  margin: 0 0 0.9rem;
+  font-style: italic;
+  color: var(--port-muted);
+  font-size: 0.92rem;
+}
+
+.profile-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.profile-card__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent) !important;
+  text-decoration: none !important;
+}
+
+.profile-card__email:hover {
+  text-decoration: underline !important;
+}
+
+/* ---------- ETIQUETAS ---------- */
+.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: var(--port-red);
+  color: #fff;
+}
+
+.tag--alt {
+  background: var(--port-accent-2);
+}
+
+.tag--ghost {
+  background: transparent;
+  color: var(--port-muted);
+  border: 1px dashed var(--port-border);
+}
+
+/* ---------- PRÁCTICAS ---------- */
+.practices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.6rem;
+  margin-top: 1.4rem;
+}
+
+.practice-card {
+  background: var(--port-card-bg);
+  border: 1px solid var(--port-border);
+  border-radius: var(--port-radius);
+  overflow: hidden;
+  box-shadow: var(--port-shadow-soft);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.practice-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--port-shadow);
+}
+
+.practice-card__image {
+  aspect-ratio: 4 / 3;
+  background: #efeff2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.practice-card__image--empty {
+  color: #b9bac0;
+  font-size: 2rem;
+  border-bottom: 1px dashed var(--port-border);
+}
+
+.practice-card__body {
+  padding: 1.2rem 1.3rem 1.4rem;
+}
+
+.practice-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+
+.practice-card__body h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  color: var(--port-ink) !important;
+}
+
+.practice-card__body p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--port-muted);
+  line-height: 1.55;
+}
+
+.practice-card--placeholder {
+  border-style: dashed;
+}
+
+.practice-card--placeholder .practice-card__body h3,
+.practice-card--placeholder .practice-card__body p {
+  color: #a7a8ae;
+}
+
+/* tarjeta "agregar nueva práctica" */
+.practice-card--add {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.6rem;
+  min-height: 220px;
+  border: 2px dashed var(--port-border);
+  color: var(--port-muted);
+  background: var(--port-bg-soft);
+}
+
+.practice-card--add .practice-card__add-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.6rem;
+  background: #fff;
+  border: 1px dashed var(--port-border);
+  color: var(--port-red);
+  font-size: 1.1rem;
+}
+
+.practice-card--add span {
+  display: block;
+  font-size: 0.85rem;
+  padding: 0 1rem 1rem;
+}
+
+/* ---------- ANIMACIONES DE ENTRADA ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media screen and (max-width: 30em) {
+  .hero {
+    padding: 1.6rem 1.1rem 3.2rem;
+  }
+
+  .hero__top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section {
+    padding: 3rem 1.1rem;
+  }
+}

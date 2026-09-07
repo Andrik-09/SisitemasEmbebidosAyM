@@ -26,4 +26,27 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
+
+      - name: Construir sitio con MkDocs
+        run: mkdocs build --clean
+
+      - name: Publicar sitio construido en main (root) para GitHub Pages
+        run: |
+          set -e
+          GENERATED_PATHS=".nojekyll 404.html index.html sitemap.xml sitemap.xml.gz assets stylesheets javascripts recursos search comandos ejemplo gitcmds"
+          touch site/.nojekyll
+          for p in $GENERATED_PATHS; do
+            rm -rf "./$p"
+          done
+          cp -r site/. .
+          rm -rf site
+          git add -A -- $GENERATED_PATHS
+          if git diff --cached --quiet; then
+            echo "Sin cambios en el sitio publicado, no se crea commit."
+          else
+            git commit -m "chore: publicar sitio construido en main/root [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
+      - name: Publicar también en la rama gh-pages (respaldo)
+        run: mkdocs gh-deploy --force
