@@ -1,4 +1,7 @@
-site_name: Plantilla para Documentación
+site_name: Portafolio de Actividades
+site_description: Portafolio de prácticas de Sistemas Embebidos y Mecatrónica — Universidad Iberoamericana Puebla
+repo_url: https://github.com/Andrik-09/SisitemasEmbebidosAyM
+repo_name: Andrik-09/SisitemasEmbebidosAyM
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -34,7 +37,12 @@ theme:
   features:
     - content.code.copy
     - content.tooltips
+    - navigation.top
+    - navigation.tracking
 extra_css:
   - https://use.fontawesome.com/releases/v6.5.2/css/all.css
   - https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/portfolio.js
 
