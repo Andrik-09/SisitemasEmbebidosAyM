@@ -92,6 +92,21 @@
       </article>
     -->
 
+    <article class="practice-card">
+      <div class="practice-card__image practice-card__image--empty">
+        <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+      </div>
+      <div class="practice-card__body">
+        <div class="practice-card__tags">
+          <span class="tag">Examen</span>
+          <span class="tag tag--alt">Pico 2</span>
+        </div>
+        <h3>Examen 1er Parcial: Stacker 5x4</h3>
+        <p>Juego Stacker de 5 niveles con LEDs y botones por interrupción. Código completo y video de la demostración.</p>
+        <a class="practice-card__link" href="examen1/">Ver código y video →</a>
+      </div>
+    </article>
+
     <article class="practice-card practice-card--placeholder">
       <div class="practice-card__image practice-card__image--empty">
         <i class="fa-solid fa-image" aria-hidden="true"></i>
