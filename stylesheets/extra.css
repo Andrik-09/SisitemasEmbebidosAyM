@@ -435,6 +435,19 @@ body {
   line-height: 1.55;
 }
 
+.practice-card__link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--port-red) !important;
+  text-decoration: none !important;
+}
+
+.practice-card__link:hover {
+  text-decoration: underline !important;
+}
+
 .practice-card--placeholder {
   border-style: dashed;
 }
