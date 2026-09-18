@@ -44,6 +44,7 @@ nav:
   - Inicio: index.md
   - Equipo: index.md#equipo
   - Prácticas: index.md#practicas
+  - Examen 1er Parcial: examen1.md
   - Encabezados: comandos.md
   - Ejemplo de Documentación: ejemplo.md
   - Comandos básicos de Git: gitcmds.md
