@@ -1,6 +1,71 @@
 # Examen 1er Parcial
 
 ```c
+/* ==========================================================================
+   STACKER 5 x 4  -  Raspberry Pi Pico 2
+
+   --------------------------------------------------------------------------
+   MAPA DE PINES
+   --------------------------------------------------------------------------
+   Señal   GPIO  Dirección  Pull             Propósito
+   L1C0     0    salida     deshabilitado    Nivel 1 (abajo), columna 0 (izq)
+   L1C1     1    salida     deshabilitado    Nivel 1, columna 1
+   L1C2     2    salida     deshabilitado    Nivel 1, columna 2
+   L1C3     3    salida     deshabilitado    Nivel 1, columna 3 (der)
+   L2C0     4    salida     deshabilitado    Nivel 2, columna 0
+   L2C1     5    salida     deshabilitado    Nivel 2, columna 1
+   L2C2     6    salida     deshabilitado    Nivel 2, columna 2
+   L2C3     7    salida     deshabilitado    Nivel 2, columna 3
+   L3C0     8    salida     deshabilitado    Nivel 3, columna 0
+   L3C1     9    salida     deshabilitado    Nivel 3, columna 1
+   L3C2    10    salida     deshabilitado    Nivel 3, columna 2
+   L3C3    11    salida     deshabilitado    Nivel 3, columna 3
+   L4C0    12    salida     deshabilitado    Nivel 4, columna 0
+   L4C1    13    salida     deshabilitado    Nivel 4, columna 1
+   L4C2    14    salida     deshabilitado    Nivel 4, columna 2
+   L4C3    15    salida     deshabilitado    Nivel 4, columna 3
+   L5C0    16    salida     deshabilitado    Nivel 5 (arriba), columna 0
+   L5C1    17    salida     deshabilitado    Nivel 5, columna 1
+   L5C2    18    salida     deshabilitado    Nivel 5, columna 2
+   L5C3    19    salida     deshabilitado    Nivel 5, columna 3
+   BTN_STP 20    entrada    pull-up interno  Botón STOP, a GND, IRQ flanco de bajada
+   BTN_RST 21    entrada    pull-up interno  Botón RESTART, a GND, IRQ flanco de bajada
+
+   Conexión de cada LED:  GPIO --- R 220 ohm --- ánodo LED --- cátodo --- GND
+   Conexión de cada botón: GPIO --- botón --- GND  (pull-up interno activado)
+
+   --------------------------------------------------------------------------
+   CÁLCULO DE LAS RESISTENCIAS (220 ohm, una por LED)
+   --------------------------------------------------------------------------
+   Datos:
+     Vcc (salida del GPIO en alto) = 3.3 V
+     Vf  (caída directa del LED rojo) = 2.0 V
+     R   = 220 ohm
+
+   Ley de Ohm sobre la resistencia:
+     V_R = Vcc - Vf = 3.3 - 2.0 = 1.3 V
+     I   = V_R / R  = 1.3 / 220 = 0.0059 A = 5.9 mA por LED
+
+   Potencia disipada:
+     P_R   = I^2 * R = (0.0059)^2 * 220 = 7.7 mW   (resistencia de 1/4 W: sobra)
+     P_LED = Vf * I  = 2.0 * 0.0059     = 11.8 mW
+
+   Peor caso de consumo (los 20 LEDs encendidos en el parpadeo de victoria):
+     I_total = 20 * 5.9 mA = 118 mA
+   El riel de 3V3 de la Pico 2 entrega bastante más que eso, así que es seguro.
+
+   --------------------------------------------------------------------------
+   MAPEO DE BITS
+   --------------------------------------------------------------------------
+   El tablero completo son 20 bits dentro de un solo uint32_t:
+     bit = 4 * nivel + columna      (nivel 0 = abajo, columna 0 = izquierda)
+   El bit N está cableado al GPIO N.
+     Nivel 1 -> bits 0-3     Nivel 2 -> bits 4-7     Nivel 3 -> bits 8-11
+     Nivel 4 -> bits 12-15   Nivel 5 -> bits 16-19
+   Patrón inicial del nivel 1: 0b0011 (columnas 0 y 1).
+
+   ========================================================================== */
+
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 
