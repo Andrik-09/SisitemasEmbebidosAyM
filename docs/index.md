@@ -122,17 +122,18 @@
       </div>
     </article>
 
-    <article class="practice-card practice-card--placeholder">
+    <article class="practice-card">
       <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-image" aria-hidden="true"></i>
+        <i class="fa-solid fa-wave-square" aria-hidden="true"></i>
       </div>
       <div class="practice-card__body">
         <div class="practice-card__tags">
-          <span class="tag tag--ghost">Etiqueta</span>
-          <span class="tag tag--ghost">Etiqueta</span>
+          <span class="tag">Registros SIO</span>
+          <span class="tag tag--alt">Osciloscopio</span>
         </div>
-        <h3>Práctica 2: Título de la práctica</h3>
-        <p>Pendiente de contenido.</p>
+        <h3>Práctica 2: SDK vs. registros — Session 3</h3>
+        <p>Comparación de la señal y la velocidad de ejecución entre <code>gpio_put</code> del SDK y escritura directa a registros SIO en GP18.</p>
+        <a class="practice-card__link" href="practica2/">Ver documentación →</a>
       </div>
     </article>
 

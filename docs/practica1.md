@@ -131,3 +131,9 @@ int main(void) {
     }
 }
 ```
+
+---
+
+### Open Question
+
+Both exercises still wait on `sleep_ms` between steps in the main loop. If two independent LED patterns needed to run at different rates on the same four pins, would driving them from a timer interrupt that writes straight to `sio_hw->gpio_set/gpio_clr` actually improve timing accuracy, or are the register writes already fast enough that the busy-wait was never really the bottleneck?
