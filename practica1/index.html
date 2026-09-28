@@ -533,6 +533,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#open-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Question
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -676,6 +687,9 @@
 </span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="p">}</span>
 </span></code></pre></div>
+<hr />
+<h3 id="open-question">Open Question</h3>
+<p>Both exercises still wait on <code>sleep_ms</code> between steps in the main loop. If two independent LED patterns needed to run at different rates on the same four pins, would driving them from a timer interrupt that writes straight to <code>sio_hw-&gt;gpio_set/gpio_clr</code> actually improve timing accuracy, or are the register writes already fast enough that the busy-wait was never really the bottleneck?</p>
 
 
 
