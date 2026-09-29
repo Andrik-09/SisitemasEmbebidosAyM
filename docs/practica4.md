@@ -66,9 +66,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_HIGH: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica4-high.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica4-high.mp4"></video>
 
 **LOW**
 
@@ -113,9 +111,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_LOW: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica4-low.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica4-low.mp4"></video>
 
 **RISE**
 
@@ -160,9 +156,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_RISE: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica4-rise.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica4-rise.mp4"></video>
 
 **FALL**
 
@@ -207,9 +201,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_FALL: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica4-fall.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica4-fall.mp4"></video>
 
 ### Open Question
 
