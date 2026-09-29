@@ -64,129 +64,30 @@
 <section class="section section--tinted" id="practicas">
   <div class="section__header">
     <span class="section__kicker">Bitácora</span>
-    <h2>Reportes de Prácticas</h2>
+    <h2>Trabajo de clase</h2>
     <p>
-      Aquí se irán agregando, práctica por práctica, los reportes realizados en clase.
-      Por ahora estas tarjetas son una plantilla base: se completarán con imagen,
-      etiquetas, título y descripción conforme avance el semestre.
+      El trabajo del semestre está organizado por parcial. Entra a cada botón para
+      ver las prácticas y exámenes correspondientes.
     </p>
   </div>
 
-  <div class="practices-grid">
-    <!--
-      PLANTILLA DE TARJETA — copia este bloque para cada práctica nueva
-      y sustituye imagen, etiquetas, título y descripción:
+  <div class="parciales-grid">
+    <a class="parcial-button" href="primer-parcial/">
+      <span class="parcial-button__index">1</span>
+      <span class="parcial-button__label">Primer Parcial</span>
+      <span class="parcial-button__hint">Ver prácticas y examen →</span>
+    </a>
 
-      <article class="practice-card">
-        <div class="practice-card__image">
-          <img src="recursos/imgs/NOMBRE_DE_LA_IMAGEN.jpg" alt="Descripción de la imagen">
-        </div>
-        <div class="practice-card__body">
-          <div class="practice-card__tags">
-            <span class="tag">Etiqueta 1</span>
-            <span class="tag tag--alt">Etiqueta 2</span>
-          </div>
-          <h3>Práctica N: Título de la práctica</h3>
-          <p>Breve descripción de qué se hizo, con qué herramientas y qué se aprendió.</p>
-        </div>
-      </article>
-    -->
+    <div class="parcial-button parcial-button--soon" aria-disabled="true">
+      <span class="parcial-button__index">2</span>
+      <span class="parcial-button__label">Segundo Parcial</span>
+      <span class="parcial-button__hint">Próximamente</span>
+    </div>
 
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-wave-square" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">Registros SIO</span>
-          <span class="tag tag--alt">Osciloscopio</span>
-        </div>
-        <h3>Práctica 1: SDK vs. registros</h3>
-        <p>Comparación de la señal y la velocidad de ejecución entre <code>gpio_put</code> del SDK y escritura directa a registros SIO en GP18.</p>
-        <a class="practice-card__link" href="practica2/">Ver documentación →</a>
-      </div>
-    </article>
-
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">Registros SIO</span>
-          <span class="tag tag--alt">GPIO</span>
-        </div>
-        <h3>Práctica 2: Contador binario y luz ida y vuelta</h3>
-        <p>Dos ejercicios con GPIO 2–5 escritos directo a los registros SIO: contador binario del 0 al 15 y un LED que se mueve de ida y vuelta.</p>
-        <a class="practice-card__link" href="practica1/">Ver documentación →</a>
-      </div>
-    </article>
-
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">Registros SIO</span>
-          <span class="tag tag--alt">Session 5</span>
-        </div>
-        <h3>Práctica 3: AND, OR y XOR con dos botones</h3>
-        <p>Tres compuertas lógicas de dos entradas implementadas en software, leyendo dos botones y encendiendo un LED directo desde el registro SIO.</p>
-        <a class="practice-card__link" href="practica3/">Ver documentación →</a>
-      </div>
-    </article>
-
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-bolt" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">GPIO IRQ</span>
-          <span class="tag tag--alt">Interrupciones</span>
-        </div>
-        <h3>Práctica 4: HIGH, LOW, RISE y FALL</h3>
-        <p>Los cuatro tipos de interrupción de GPIO probados con un dip switch y un LED, observando la diferencia entre disparo por nivel y por flanco.</p>
-        <a class="practice-card__link" href="practica4/">Ver documentación →</a>
-      </div>
-    </article>
-
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-dice" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">GPIO IRQ</span>
-          <span class="tag tag--alt">Ruleta</span>
-        </div>
-        <h3>Práctica 5: Ruleta de 5 LEDs con interrupciones</h3>
-        <p>Ruleta de 5 LEDs controlada por interrupciones: un botón detiene el recorrido y detecta si ganaste en el LED del medio, y otros dos suben o bajan la velocidad.</p>
-        <a class="practice-card__link" href="practica5/">Ver documentación →</a>
-      </div>
-    </article>
-
-    <article class="practice-card">
-      <div class="practice-card__image practice-card__image--empty">
-        <i class="fa-solid fa-microchip" aria-hidden="true"></i>
-      </div>
-      <div class="practice-card__body">
-        <div class="practice-card__tags">
-          <span class="tag">Examen</span>
-          <span class="tag tag--alt">Pico 2</span>
-        </div>
-        <h3>Examen 1er Parcial: Stacker 5x4</h3>
-        <p>Juego Stacker de 5 niveles con LEDs y botones por interrupción. Código completo y video de la demostración.</p>
-        <a class="practice-card__link" href="examen1/">Ver código y video →</a>
-      </div>
-    </article>
-
-    <div class="practice-card practice-card--add">
-      <div class="practice-card__add-icon" aria-hidden="true">
-        <i class="fa-solid fa-plus"></i>
-      </div>
-      <span>Nueva práctica<br>se agregará aquí</span>
+    <div class="parcial-button parcial-button--soon" aria-disabled="true">
+      <span class="parcial-button__index">3</span>
+      <span class="parcial-button__label">Tercer Parcial</span>
+      <span class="parcial-button__hint">Próximamente</span>
     </div>
   </div>
 </section>
