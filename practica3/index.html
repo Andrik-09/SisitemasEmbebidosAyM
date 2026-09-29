@@ -751,7 +751,7 @@
 </span><span id="__span-3-79"><a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>Video:</p>
-<video controls width="100%" src="../recursos/videos/practica3-closing.mp4"></video>
+<video controls width="100%" src="../recursos/videos/practica3-closing-v2.mp4"></video>
 
 <h3 id="open-question">Open Question</h3>
 <p>All three gates poll <code>gpio_in</code> once every 100 ms through <code>sleep_ms</code>, so a very quick press on one button right between two polls could be missed. Would wiring both buttons to a single GPIO interrupt (triggered on either pin's edge) actually catch that, or would debouncing two independent buttons from one shared ISR need its own edge-case handling?</p>

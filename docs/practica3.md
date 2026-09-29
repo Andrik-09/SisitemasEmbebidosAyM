@@ -268,7 +268,7 @@ int main(void) {
 
 Video:
 
-<video controls width="100%" src="../recursos/videos/practica3-closing.mp4"></video>
+<video controls width="100%" src="../recursos/videos/practica3-closing-v2.mp4"></video>
 
 ### Open Question
 
