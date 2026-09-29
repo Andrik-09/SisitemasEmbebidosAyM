@@ -167,6 +167,21 @@
       </div>
     </article>
 
+    <article class="practice-card">
+      <div class="practice-card__image practice-card__image--empty">
+        <i class="fa-solid fa-dice" aria-hidden="true"></i>
+      </div>
+      <div class="practice-card__body">
+        <div class="practice-card__tags">
+          <span class="tag">GPIO IRQ</span>
+          <span class="tag tag--alt">Ruleta</span>
+        </div>
+        <h3>Práctica 5: Ruleta de 5 LEDs con interrupciones</h3>
+        <p>Ruleta de 5 LEDs controlada por interrupciones: un botón detiene el recorrido y detecta si ganaste en el LED del medio, y otros dos suben o bajan la velocidad.</p>
+        <a class="practice-card__link" href="practica5/">Ver documentación →</a>
+      </div>
+    </article>
+
     <div class="practice-card practice-card--add">
       <div class="practice-card__add-icon" aria-hidden="true">
         <i class="fa-solid fa-plus"></i>
