@@ -9,6 +9,7 @@
 ### Setup
 
 - Pin map: `LED_BIT` = GPIO0 (LED, active-high: set = on), `button_A_pin` = GPIO16, `button_B_pin` = GPIO17. Both buttons use an external pull-up, so the internal pulls are disabled with `gpio_disable_pulls`.
+- Closing activity: reuses the same two buttons (GPIO16/17) as advance/retreat, driving a 4-LED bus on `PIN_A`–`PIN_D` = GPIO18–21 (`MASK_LED`).
 
 ### What I did
 
@@ -17,6 +18,7 @@
 3. Copied the AND code and changed the condition to `||` for the OR version.
 4. Copied it again and compared the two button states for inequality to get the XOR version.
 5. Called `stdio_init_all()` and used `printf` to also print the raw `gpio_in` value over serial while testing each gate.
+6. Added a closing activity: a 4-LED position counter on GPIO18–21, reusing the same two buttons — button A advances the position (wrapping from 3 back to 0), button B retreats it (wrapping from 0 back to 3) — with a `mover1`/`mover2` flag per button so a single press only steps once instead of free-running while held.
 
 ### What went wrong
 
@@ -179,6 +181,94 @@ int main(void) {
 Video:
 
 <video controls width="100%" src="../recursos/videos/practica3-xor.mp4"></video>
+
+**Closing Activity — 4-Position LED Counter**
+
+```c
+#include "pico/stdlib.h"
+#include "hardware/structs/sio.h"
+#include <stdio.h>
+
+#define button_A_pin 16
+#define button_B_pin 17
+
+#define PIN_A 18
+#define PIN_B 19
+#define PIN_C 20
+#define PIN_D 21
+
+int main(void) {
+    stdio_init_all();
+
+    const uint32_t MASK_LED = 
+        (1u << PIN_A) | 
+        (1u << PIN_B) | 
+        (1u << PIN_C) | 
+        (1u << PIN_D);
+
+    const uint32_t BTN_A_BIT = 1u << button_A_pin; // Botón avanzar en GPIO 16
+    const uint32_t BTN_B_BIT = 1u << button_B_pin; // Botón retroceder en GPIO 17
+
+    // Inicializar pines
+    gpio_init(PIN_A);
+    gpio_init(PIN_B);
+    gpio_init(PIN_C);
+    gpio_init(PIN_D);
+    gpio_init(button_A_pin);
+    gpio_init(button_B_pin);
+
+   
+    sio_hw->gpio_oe_set = MASK_LED;
+    sio_hw->gpio_oe_clr = BTN_A_BIT;
+    sio_hw->gpio_oe_clr = BTN_B_BIT;
+
+    // desactivamos pulls internos porque usamos pull-up externo, o sea la resistencia
+    gpio_disable_pulls(button_A_pin);
+    gpio_disable_pulls(button_B_pin);
+
+    int counter = 0;
+    int mover1 = 0;
+    int mover2 = 0;
+
+    while (true) {
+        // Con pull-up externo: Presionado = 0 
+        int a = (sio_hw->gpio_in & BTN_A_BIT) == 0;
+        int b = (sio_hw->gpio_in & BTN_B_BIT) == 0;
+
+        // Botón A: avanza
+        if (a && !mover1) {
+            counter++;
+            if (counter > 3) {
+                counter = 0; 
+            }
+            mover1 = 1;
+        } else if (!a && mover1) {
+            mover1 = 0;
+        }
+
+        // Botón B: retrocede
+        if (b && !mover2) {
+            counter--;
+            if (counter < 0) {
+                counter = 3; 
+            }
+            mover2 = 1;
+        } else if (!b && mover2) {
+            mover2 = 0;
+        }
+
+        
+        sio_hw->gpio_clr = MASK_LED;                  // Apaga todos
+        sio_hw->gpio_set = (1u << (PIN_A + counter)); // Prende LED actual
+
+        sleep_ms(100); 
+    }
+}
+```
+
+Video:
+
+<video controls width="100%" src="../recursos/videos/practica3-closing.mp4"></video>
 
 ### Open Question
 
