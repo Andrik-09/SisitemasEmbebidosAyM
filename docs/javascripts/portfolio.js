@@ -7,7 +7,7 @@
 
   function init() {
     var revealTargets = document.querySelectorAll(
-      ".section__header, .profile-card, .practice-card"
+      ".section__header, .profile-card, .practice-card, .parcial-button"
     );
 
     if (!revealTargets.length) return;
