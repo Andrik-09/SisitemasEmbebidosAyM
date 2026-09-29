@@ -8,7 +8,7 @@
 
 ### Setup
 
-- Pin map: `LED_BIT` = GPIO0 (LED, active-low: cleared = on), `button_A_pin` = GPIO16, `button_B_pin` = GPIO17. Both buttons use an external pull-up, so the internal pulls are disabled with `gpio_disable_pulls`.
+- Pin map: `LED_BIT` = GPIO0 (LED, active-high: set = on), `button_A_pin` = GPIO16, `button_B_pin` = GPIO17. Both buttons use an external pull-up, so the internal pulls are disabled with `gpio_disable_pulls`.
 
 ### What I did
 
@@ -59,10 +59,10 @@ int main(void) {
         int memory = sio_hw->gpio_in;
         printf("%d\n", memory);
         if ((sio_hw->gpio_in & BTN_A_BIT) == 0 && (sio_hw->gpio_in & BTN_B_BIT) ==0) {
-            sio_hw->gpio_clr = LED_BIT;   // LED ON
+            sio_hw->gpio_set = LED_BIT;   // LED ON
             printf("ON");
         } else {
-            sio_hw->gpio_set = LED_BIT;   // LED OFF
+            sio_hw->gpio_clr = LED_BIT;   // LED OFF
         }
 
         // Brief rest / minimal debounce
@@ -73,9 +73,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_AND: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica3-and.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica3-and.mp4"></video>
 
 **OR**
 
@@ -113,10 +111,10 @@ int main(void) {
         printf("%d\n", memory);
         
         if ((sio_hw->gpio_in & BTN_A_BIT) == 0 || (sio_hw->gpio_in & BTN_B_BIT) == 0) {
-            sio_hw->gpio_clr = LED_BIT;   // LED ON
+            sio_hw->gpio_set = LED_BIT;   // LED ON
             printf("ON");
         } else {
-            sio_hw->gpio_set = LED_BIT;   // LED OFF
+            sio_hw->gpio_clr = LED_BIT;   // LED OFF
         }
 
         // Brief rest / minimal debounce
@@ -127,9 +125,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_OR: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica3-or.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica3-or.mp4"></video>
 
 **XOR**
 
@@ -168,10 +164,10 @@ int main(void) {
         
         // XOR: Compara si el estado de presionado del botón A es DIFERENTE al del botón B
         if (((sio_hw->gpio_in & BTN_A_BIT) == 0) != ((sio_hw->gpio_in & BTN_B_BIT) == 0)) {
-            sio_hw->gpio_clr = LED_BIT;   // LED ON
+            sio_hw->gpio_set = LED_BIT;
             printf("ON");
         } else {
-            sio_hw->gpio_set = LED_BIT;   // LED OFF
+            sio_hw->gpio_clr = LED_BIT;
         }
 
         // Brief rest / minimal debounce
@@ -182,9 +178,7 @@ int main(void) {
 
 Video:
 
-<!-- VIDEO_XOR: replace the "Video: pending" line above and/or insert here
-     <video controls width="100%" src="../recursos/videos/practica3-xor.mp4"></video>
--->
+<video controls width="100%" src="../recursos/videos/practica3-xor.mp4"></video>
 
 ### Open Question
 
