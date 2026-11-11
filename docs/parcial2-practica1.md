@@ -104,6 +104,17 @@ int main() {
 
 ### Evidence
 
+Oscilloscope readings in each video:
+
+| Video | Frequency | Duty cycle |
+|---|---|---|
+| Base code | 2.002 kHz | varying |
+| Toggle a 1 | 146.5 kHz | varying |
+| Toggle 10 | 14.65 kHz | varying |
+| Toggle 20 | 14.65 kHz | 20 % (fixed) |
+| Toggle 55 | 14.65 kHz | 55 % (fixed) |
+| 83 % | 14.65 kHz | 83 % (fixed) |
+
 **Base code**
 
 <video controls width="100%" src="../recursos/videos/parcial2-practica1-base.mp4"></video>
@@ -112,10 +123,6 @@ int main() {
 
 <video controls width="100%" src="../recursos/videos/parcial2-practica1-toggle-a-1.mp4"></video>
 
-**Toggle 55**
-
-<video controls width="100%" src="../recursos/videos/parcial2-practica1-toggle-55.mp4"></video>
-
 **Toggle 10**
 
 <video controls width="100%" src="../recursos/videos/parcial2-practica1-toggle-10.mp4"></video>
@@ -123,6 +130,10 @@ int main() {
 **Toggle 20**
 
 <video controls width="100%" src="../recursos/videos/parcial2-practica1-toggle-20.mp4"></video>
+
+**Toggle 55**
+
+<video controls width="100%" src="../recursos/videos/parcial2-practica1-toggle-55.mp4"></video>
 
 **83 %**
 
