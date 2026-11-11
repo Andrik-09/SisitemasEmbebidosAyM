@@ -120,14 +120,14 @@ int main() {
  
         float frec = 0;
  
-        if (gpio_get(DO1))      frec = 1046.5f; printf  // Do
-        else if (gpio_get(RE))  frec = 1108.73f;  // Re
-        else if (gpio_get(MI))  frec = 1174.66f;  // Mi
-        else if (gpio_get(FA))  frec = 1244.51f;  // Fa
-        else if (gpio_get(SOL)) frec = 1328.51f;  // Sol
-        else if (gpio_get(LA))  frec = 1396.91f;  // La
-        else if (gpio_get(SI))  frec = 1567.98f;  // Si
-        else if (gpio_get(DO2)) frec = 1760.00f;  // Do agudo
+        if (gpio_get(DO1))      frec = 1046.50f;  // Do
+        else if (gpio_get(RE))  frec = 1174.66f;  // Re
+        else if (gpio_get(MI))  frec = 1318.51f;  // Mi
+        else if (gpio_get(FA))  frec = 1396.91f;  // Fa
+        else if (gpio_get(SOL)) frec = 1567.98f;  // Sol
+        else if (gpio_get(LA))  frec = 1760.00f;  // La
+        else if (gpio_get(SI))  frec = 1975.53f;  // Si
+        else if (gpio_get(DO2)) frec = 2093.00f;  // Do agudo
  
         if (gpio_get(UP) && volumen < VOL_MAX) {
             volumen++;
