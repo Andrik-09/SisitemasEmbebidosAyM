@@ -23,7 +23,7 @@
 
 ### What went wrong
 
-- Pending.
+- The only problem was in the connections: we wired the devices wrong at first. The code itself was fine and worked as expected once everything was connected correctly.
 
 ### Code — key parts
 
