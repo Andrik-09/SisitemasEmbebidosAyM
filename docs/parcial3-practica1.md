@@ -18,9 +18,9 @@
 1. Wrote one program per sensor, all starting the same way: `adc_init()`, `adc_gpio_init(ADC_PIN)` to put GP26 in analog mode, and `adc_select_input(ADC_INPUT)` to pick channel 0.
 2. In each loop, took a reading with `adc_read()` every 500 ms and converted it to voltage with `raw * VREF / ADC_MAX`.
 3. **Potentiometer:** turned the reading into a position from 0 % to 100 % (`raw * 100 / ADC_MAX`) and turned the knob to watch it change.
-4. **NTC thermistor:** computed the resistance ratio `raw / (ADC_MAX - raw)` and applied the Beta equation (`BETA` = 3950, referenced to 25 °C = 298.15 K), discarding readings at 0 or 4095 as out of range.
-5. **Photoresistor (LDR):** recovered the LDR's resistance from the divider with the 10 kΩ fixed resistor (`R_FIXED`) and converted it to lux with the module's gamma model (`GAMMA` = 0.7, `RL10` = 50 kΩ at 10 lux).
-6. Since the logarithm and the exponential were needed without `math.h`, wrote our own `ln_propio` (range reduction by powers of 2 plus a series) and `exp_propio` (range reduction plus a Taylor series).
+4. **NTC thermistor:** computed the resistance ratio from the reading, `1 / (ADC_MAX / raw - 1)`, and applied the Beta equation (`BETA` = 3950, referenced to 25 °C = 298.15 K), discarding readings at 0 or 4095 as out of range.
+5. **Photoresistor (LDR):** recovered the LDR's resistance from the divider with the 10 kΩ fixed resistor, `R_FIXED * raw / (ADC_MAX - raw)`, and converted it to lux with the module's gamma model (`GAMMA` = 0.7, `RL10` = 50 kΩ at 10 lux), discarding readings at 0 or 4095 as out of range.
+6. Used `logf` and `powf` from `math.h` for the logarithm in the Beta equation and the power in the gamma model. A first version computed them with our own series functions (`ln_propio` and `exp_propio`); it is the one in the LDR and NTC screenshots, and it gives the same readings.
 7. Moved the light and temperature sliders in the simulator and compared them with the values printed on the serial monitor.
 8. **Microphone (improvised with a potentiometer):** took `N` = 100 readings 2 ms apart (`SAMPLE_US` = 2000, a 200 ms window), kept the minimum and maximum, and printed the peak-to-peak difference and its percentage of the full scale every 300 ms. Then left the knob still and turned it quickly to see the level rise and fall.
 
@@ -36,6 +36,7 @@
 
 ```c
 #include <stdio.h>
+#include <math.h>
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 
@@ -46,32 +47,6 @@
 #define R_FIXED    10000.0f
 #define GAMMA      0.7f
 #define RL10       50.0f
-#define LN2        0.69314718f
-#define LN10       2.30258509f
-
-static float ln_propio(float x) {
-    int n = 0;
-    while (x > 2.0f) { x = x / 2.0f; n++; }
-    while (x < 1.0f) { x = x * 2.0f; n--; }
-    float y = (x - 1.0f) / (x + 1.0f);
-    float y2 = y * y;
-    float suma = y * (1.0f + y2 / 3.0f + y2 * y2 / 5.0f + y2 * y2 * y2 / 7.0f + y2 * y2 * y2 * y2 / 9.0f);
-    return 2.0f * suma + n * LN2;
-}
-
-static float exp_propio(float x) {
-    int k = (int)(x / LN2 + (x >= 0.0f ? 0.5f : -0.5f));
-    float r = x - k * LN2;
-    float termino = 1.0f;
-    float suma = 1.0f;
-    for (int i = 1; i <= 8; i++) {
-        termino = termino * r / i;
-        suma = suma + termino;
-    }
-    while (k > 0) { suma = suma * 2.0f; k--; }
-    while (k < 0) { suma = suma / 2.0f; k++; }
-    return suma;
-}
 
 int main() {
     stdio_init_all();
@@ -80,9 +55,20 @@ int main() {
     adc_select_input(ADC_INPUT);
 
     while (true) {
-```
+        uint16_t raw = adc_read();
+        float v = raw * VREF / ADC_MAX;
 
-The screenshot ends at line 45, so the body of the main loop is still to be added.
+        if (raw > 0 && raw < 4095) {
+            float r_ldr = R_FIXED * raw / (ADC_MAX - raw);
+            float lux = powf(RL10 * 1000.0f * powf(10.0f, GAMMA) / r_ldr, 1.0f / GAMMA);
+            printf("ADC: %u  V: %.3f  R: %.0f ohm  Luz: %.1f lux\n", raw, v, r_ldr, lux);
+        } else {
+            printf("ADC: %u  fuera de rango\n", raw);
+        }
+        sleep_ms(500);
+    }
+}
+```
 
 ### Evidence
 
@@ -98,6 +84,7 @@ The simulator's light level is set to 145 lux; the program reads ADC 1782, 1.436
 
 ```c
 #include <stdio.h>
+#include <math.h>
 #include "pico/stdlib.h"
 #include "hardware/adc.h"
 
@@ -106,17 +93,6 @@ The simulator's light level is set to 145 lux; the program reads ADC 1782, 1.436
 #define VREF       3.3f
 #define ADC_MAX    4095.0f
 #define BETA       3950.0f
-#define LN2        0.69314718f
-
-static float ln_propio(float x) {
-    int n = 0;
-    while (x > 2.0f) { x = x / 2.0f; n++; }
-    while (x < 1.0f) { x = x * 2.0f; n--; }
-    float y = (x - 1.0f) / (x + 1.0f);
-    float y2 = y * y;
-    float suma = y * (1.0f + y2 / 3.0f + y2 * y2 / 5.0f + y2 * y2 * y2 / 7.0f + y2 * y2 * y2 * y2 / 9.0f);
-    return 2.0f * suma + n * LN2;
-}
 
 int main() {
     stdio_init_all();
@@ -129,8 +105,7 @@ int main() {
         float v = raw * VREF / ADC_MAX;
 
         if (raw > 0 && raw < 4095) {
-            float relacion = raw / (ADC_MAX - raw);
-            float tempC = 1.0f / (ln_propio(relacion) / BETA + 1.0f / 298.15f) - 273.15f;
+            float tempC = 1.0f / (logf(1.0f / (ADC_MAX / raw - 1.0f)) / BETA + 1.0f / 298.15f) - 273.15f;
             printf("ADC: %u  V: %.3f  T: %.2f C\n", raw, v, tempC);
         } else {
             printf("ADC: %u  fuera de rango\n", raw);
@@ -247,4 +222,4 @@ With the knob still, the peak-to-peak value is 0 (silence). Turning it quickly m
 
 ### Open Question
 
-Both `ln_propio` and `exp_propio` stop their series after a fixed number of terms, and the readings already land within 0.3 lux and 0.01 °C of the simulator. How much of the remaining difference comes from truncating those series, and how much from the ADC itself — its 12-bit step of about 0.8 mV, which turns into a much larger change in lux or degrees at the ends of the range, where the curves are steepest? Would averaging several readings help more than adding terms to the series?
+The readings land within 0.3 lux and 0.01 °C of the simulator, and the first version, with our own series instead of `logf` and `powf`, gave the same numbers — so the math is not where the error is. What is left comes from the ADC: one 12-bit step is about 0.8 mV, and because the LDR and NTC curves are steepest near the ends of the range, that same step turns into a much larger jump in lux or degrees there than in the middle. Would averaging several readings be enough to steady those extremes, or would a different fixed resistor, chosen to centre the divider on the range we care about, help more?
