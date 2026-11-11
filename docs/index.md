@@ -78,11 +78,11 @@
       <span class="parcial-button__hint">Ver prácticas y examen →</span>
     </a>
 
-    <div class="parcial-button parcial-button--soon" aria-disabled="true">
+    <a class="parcial-button" href="segundo-parcial/">
       <span class="parcial-button__index">2</span>
       <span class="parcial-button__label">Segundo Parcial</span>
-      <span class="parcial-button__hint">Próximamente</span>
-    </div>
+      <span class="parcial-button__hint">Ver prácticas →</span>
+    </a>
 
     <div class="parcial-button parcial-button--soon" aria-disabled="true">
       <span class="parcial-button__index">3</span>
