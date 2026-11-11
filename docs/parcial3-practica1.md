@@ -1,8 +1,8 @@
-# ADC — Reading a Light Sensor, a Temperature Sensor and a Potentiometer
+# ADC — Reading a Light Sensor, a Temperature Sensor, a Potentiometer and a Microphone
 
-**Goal (one sentence):** Use the Pico 2's analog-to-digital converter to read three analog sensors — a photoresistor, an NTC thermistor and a potentiometer — and turn each raw reading into a physical value: lux, degrees Celsius and knob position.
+**Goal (one sentence):** Use the Pico 2's analog-to-digital converter to read four analog signals — a photoresistor, an NTC thermistor, a potentiometer and a microphone — and turn each raw reading into a physical value: lux, degrees Celsius, knob position and sound level.
 
-**Prediction — written before running anything:** The ADC is 12-bit, so every reading should fall between 0 and 4095 and map linearly to 0–3.3 V. For the potentiometer that voltage is the measurement itself, so the percentage should follow the knob directly. The photoresistor and the thermistor are not linear: each sits in a voltage divider, so the program first has to recover the sensor's resistance from the voltage and only then apply its own equation — the gamma model for the LDR and the Beta equation for the NTC. If the equations are right, the values printed should match the light level and the temperature set in the simulator.
+**Prediction — written before running anything:** The ADC is 12-bit, so every reading should fall between 0 and 4095 and map linearly to 0–3.3 V. For the potentiometer that voltage is the measurement itself, so the percentage should follow the knob directly. The photoresistor and the thermistor are not linear: each sits in a voltage divider, so the program first has to recover the sensor's resistance from the voltage and only then apply its own equation — the gamma model for the LDR and the Beta equation for the NTC. If the equations are right, the values printed should match the light level and the temperature set in the simulator. A microphone is different: a single reading says nothing about loudness, because sound is a signal that swings up and down, so the level has to come from the spread between the highest and lowest reading over a short window — zero in silence and larger the stronger the signal.
 
 ---
 
@@ -10,7 +10,8 @@
 
 - Simulated in Wokwi on a Raspberry Pi Pico 2; one sensor at a time.
 - Each sensor module powered from 3.3 V and GND, with its analog output on GP26 (`ADC_PIN` = 26, `ADC_INPUT` = 0, i.e. ADC0).
-- Conversion constants shared by the three programs: `VREF` = 3.3 V and `ADC_MAX` = 4095.
+- Conversion constants shared by the programs: `VREF` = 3.3 V and `ADC_MAX` = 4095.
+- Wokwi has no microphone part, so for that exercise a potentiometer stands in for it: holding the knob still plays the role of silence, and turning it quickly back and forth plays the role of sound.
 
 ### What I did
 
@@ -21,6 +22,7 @@
 5. **Photoresistor (LDR):** recovered the LDR's resistance from the divider with the 10 kΩ fixed resistor (`R_FIXED`) and converted it to lux with the module's gamma model (`GAMMA` = 0.7, `RL10` = 50 kΩ at 10 lux).
 6. Since the logarithm and the exponential were needed without `math.h`, wrote our own `ln_propio` (range reduction by powers of 2 plus a series) and `exp_propio` (range reduction plus a Taylor series).
 7. Moved the light and temperature sliders in the simulator and compared them with the values printed on the serial monitor.
+8. **Microphone (improvised with a potentiometer):** took `N` = 100 readings 2 ms apart (`SAMPLE_US` = 2000, a 200 ms window), kept the minimum and maximum, and printed the peak-to-peak difference and its percentage of the full scale every 300 ms. Then left the knob still and turned it quickly to see the level rise and fall.
 
 ### What went wrong
 
@@ -32,7 +34,55 @@
 
 ### Code
 
-Code: pending — the screenshot below shows lines 1–45 of the program; the rest of the main loop is still to be added.
+```c
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/adc.h"
+
+#define ADC_PIN    26
+#define ADC_INPUT  0
+#define VREF       3.3f
+#define ADC_MAX    4095.0f
+#define R_FIXED    10000.0f
+#define GAMMA      0.7f
+#define RL10       50.0f
+#define LN2        0.69314718f
+#define LN10       2.30258509f
+
+static float ln_propio(float x) {
+    int n = 0;
+    while (x > 2.0f) { x = x / 2.0f; n++; }
+    while (x < 1.0f) { x = x * 2.0f; n--; }
+    float y = (x - 1.0f) / (x + 1.0f);
+    float y2 = y * y;
+    float suma = y * (1.0f + y2 / 3.0f + y2 * y2 / 5.0f + y2 * y2 * y2 / 7.0f + y2 * y2 * y2 * y2 / 9.0f);
+    return 2.0f * suma + n * LN2;
+}
+
+static float exp_propio(float x) {
+    int k = (int)(x / LN2 + (x >= 0.0f ? 0.5f : -0.5f));
+    float r = x - k * LN2;
+    float termino = 1.0f;
+    float suma = 1.0f;
+    for (int i = 1; i <= 8; i++) {
+        termino = termino * r / i;
+        suma = suma + termino;
+    }
+    while (k > 0) { suma = suma * 2.0f; k--; }
+    while (k < 0) { suma = suma / 2.0f; k++; }
+    return suma;
+}
+
+int main() {
+    stdio_init_all();
+    adc_init();
+    adc_gpio_init(ADC_PIN);
+    adc_select_input(ADC_INPUT);
+
+    while (true) {
+```
+
+The screenshot ends at line 45, so the body of the main loop is still to be added.
 
 ### Evidence
 
@@ -136,6 +186,56 @@ With the knob near the middle, the program reads ADC 1957 and 1.577 V, a positio
 
 ---
 
+## Microphone (improvised with a potentiometer)
+
+### Code
+
+```c
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "hardware/adc.h"
+
+#define ADC_PIN    26
+#define ADC_INPUT  0
+#define ADC_MAX    4095.0f
+#define N          100
+#define SAMPLE_US  2000
+
+int main() {
+    stdio_init_all();
+    adc_init();
+    adc_gpio_init(ADC_PIN);
+    adc_select_input(ADC_INPUT);
+
+    while (true) {
+        uint16_t minimo = 4095;
+        uint16_t maximo = 0;
+
+        for (int i = 0; i < N; i++) {
+            uint16_t raw = adc_read();
+            if (raw < minimo) minimo = raw;
+            if (raw > maximo) maximo = raw;
+            sleep_us(SAMPLE_US);
+        }
+
+        uint16_t pp = maximo - minimo;
+        float porcentaje = pp * 100.0f / ADC_MAX;
+        printf("Pico a pico: %u  Nivel: %.1f %%\n", pp, porcentaje);
+        sleep_ms(300);
+    }
+}
+```
+
+### Evidence
+
+With the knob still, the peak-to-peak value is 0 (silence). Turning it quickly makes it jump — up to 4095 (100 %) on a full sweep, and values such as 1245 (30.4 %), 729 (17.8 %) or 152 (3.7 %) on smaller movements — and it drops back to 0 as soon as the knob stops.
+
+<video controls width="100%" src="../recursos/videos/parcial3-practica1-microfono.mp4"></video>
+
+<img src="../recursos/imgs/parcial3-practica1-microfono.webp" alt="Wokwi simulation of the improvised microphone: the serial monitor prints the peak-to-peak value and the level, going from 4095 at 100 % down to 0 at 0 %" style="max-width: 100%; border-radius: 8px;">
+
+---
+
 ## Results
 
 | Sensor | Set in the simulator | ADC | Voltage | Computed by the program |
@@ -143,6 +243,7 @@ With the knob near the middle, the program reads ADC 1957 and 1.577 V, a positio
 | Photoresistor (LDR) | 145 lux | 1782 | 1.436 V | 144.7 lux (R = 7704 Ω) |
 | NTC thermistor | 50.3 °C | 1072 | 0.864 V | 50.31 °C |
 | Potentiometer | knob near the middle | 1957 | 1.577 V | 47.8 % |
+| Microphone (potentiometer) | knob still / turned quickly | 0 to 4095 peak-to-peak | — | 0.0 % to 100.0 % |
 
 ### Open Question
 
