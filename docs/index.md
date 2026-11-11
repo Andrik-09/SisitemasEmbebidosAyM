@@ -40,7 +40,7 @@
       <h3>Andrik Pérez Luna</h3>
       <p class="profile-card__role">Ingeniería Mecatrónica</p>
       <div class="profile-card__tags">
-        <span class="tag">Ing. Mecatrónica</span>
+        <span class="tag">5.º semestre</span>
       </div>
       <a class="profile-card__email" href="mailto:200851@iberopuebla.mx">
         <i class="fa-solid fa-envelope" aria-hidden="true"></i> 200851@iberopuebla.mx
